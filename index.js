@@ -19,7 +19,8 @@ app.get('/', (req, res) => {
 })
 
 // Routers
-app.use('/article', require('./routes/article'))
+const articleRouter = require('./routes/article');
+app.use('/articles', articleRouter)
 
 // Démarrage du serveur
 app.listen(port, () => {

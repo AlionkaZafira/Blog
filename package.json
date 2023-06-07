@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "start": "nodemon index.js",
-        "migration": "node database/migrations.js"
+        "migration": "node databases/migration.js"
     },
     "author": "",
     "license": "ISC",

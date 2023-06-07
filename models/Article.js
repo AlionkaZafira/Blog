@@ -40,8 +40,8 @@ class Article {
 
     create() {
         return new Promise((resolve, reject) => {
-            db.run("INSERT INTO articles(login, password, email) \
-                VALUES(?, ? ,?)", [this.login, this.password, this.email], (err) => {
+            db.run("INSERT INTO articles(title, content, visible, created_at, update_at) \
+                VALUES(?, ? ,?)", [this.title, this.content, this.visible, this.created_at, this.update_at], (err) => {
                 if (err) {
                     console.error(err)
                     reject(err)
@@ -87,8 +87,8 @@ class Article {
     toJSON() {
         return {
             id: this.id,
-            login: this.login,
-            email: this.email,
+            content: this.content,
+            visible: this.visible,
             created_at: this.created_at,
             updated_at: this.updated_at
         }
