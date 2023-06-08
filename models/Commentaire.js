@@ -5,43 +5,43 @@ class Article {
 
     constructor(data) {
         this.id = data.id || null
+        this.post_id = data.post_id || null
+        this.author = data.author || null
         this.content = data.content || null
-        this.title = data.title || null
-        this.visible = data.visible || null
         this.created_at = data.created_at || null
-        this.updated_at = data.updated_at || null
+        this.last_edit = data.last_edit || null
     }
 
     static all() {
         return new Promise((resolve, reject) => {
-            const articles = []
-            db.each('SELECT * FROM articles', (err, row) => {
+            const commentaires = []
+            db.each('SELECT * FROM commentaires', (err, row) => {
                 if (err)
                     reject(err)
 
-                articles.push(new Article(row))
+                commentaires.push(new Commentaire(row))
             }, (err) => {
-                resolve(articles)
+                resolve(commentaires)
             })
         })
     }
 
     static find(id) {
         return new Promise((resolve, reject) => {
-            db.get('SELECT * FROM articles WHERE id = ?', id, (err, row) => {
+            db.get('SELECT * FROM commentaires WHERE id = ?', id, (err, row) => {
                 if (err)
                     reject(err)
 
-                const article = (row) ? new Article(row) : null
-                resolve(article)
+                const commentaire = (row) ? new Commentaire(row) : null
+                resolve(commentaire)
             })
         })
     }
 
     create() {
         return new Promise((resolve, reject) => {
-            db.run("INSERT INTO articles(title, content, visible, created_at, update_at) \
-                VALUES(?, ? ,?)", [this.title, this.content, this.visible, this.created_at, this.update_at], (err) => {
+            db.run("INSERT INTO commentaires(content, author, created_at, last_edit) \
+                VALUES(?, ? ,?)", [this.content, this.author, this.created_at, this.last_edit], (err) => {
                 if (err) {
                     console.error(err)
                     reject(err)
@@ -54,29 +54,29 @@ class Article {
 
     update(data) {
         return new Promise((resolve, reject) => {
-            db.run("UPDATE articles SET content = ? WHERE id = ?", [data.content, this.id], async (err) => {
+            db.run("UPDATE commentaires SET content = ? WHERE id = ?", [data.content, this.id], async (err) => {
                 if (err) {
                     console.error(err)
                     reject(err)
                 }
 
-                const article = Article.find(this.id)
+                const article = Commentaire.find(this.id)
 
-                resolve(article)
+                resolve(commentaire)
             })
         })
     }
 
     delete() {
         return new Promise((resolve, reject) => {
-            db.run("DELETE FROM articles WHERE id = ?", [this.id], (err) => {
+            db.run("DELETE FROM commentaires WHERE id = ?", [this.id], (err) => {
                 if (err) {
                     console.error(err)
                     reject(err)
                 }
 
-                const article = Article.find(this.id)
-                if (!article)
+                const commentaire = Commentaire.find(this.id)
+                if (!commentaire)
                     reject('Erreur')
 
                 resolve()
@@ -87,12 +87,13 @@ class Article {
     toJSON() {
         return {
             id: this.id,
+            post_id: this.post_id,
             content: this.content,
-            visible: this.visible,
+            author: this.author,
             created_at: this.created_at,
-            updated_at: this.updated_at
+            last_edit: this.last_edit
         }
     }
 }
 
-module.exports = Article
+module.exports = Commentaire

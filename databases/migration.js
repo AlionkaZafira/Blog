@@ -10,7 +10,21 @@ db.serialize(() => {
         created_at DATETIME,                    \
         update_at DATETIME                      \
     )")
-    console.log('Table articles créée')
-})
+    db.run("CREATE TABLE IF NOT EXISTS tags(   \
+        id INTEGER PRIMARY KEY AUTOINCREMENT,   \
+        name VARCHAR(100) NOT NULL              \
+    )")
 
+    db.run("CREATE TABLE IF NOT EXISTS commentaires(   \
+    id INTEGER PRIMARY KEY AUTOINCREMENT,   \
+    post_id INTEGER ,   \
+    content VARCAHR(50) NOT NULL,             \
+    author VARCHAR(100) NOT NULL,              \
+    created_at DATETIME,                    \
+    last_edit DATETIME                      \
+)")
+    console.log('Table articles créée')
+    console.log('Table tag créée')
+    console.log('Table commentaire créée')
+})
 db.close()

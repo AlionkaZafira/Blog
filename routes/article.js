@@ -12,7 +12,7 @@ router.route('/:id(\\d+)')
     .put(checkArticleExist, async (req, res) => {
         req.session.article = await req.session.article.update(req.body)
 
-        res.json(`L'utilisateur ${req.session.article.login} à été modifié`)
+        res.json(`L'utilisateur ${req.session.article.content} à été modifié`)
     })
     // Supprimer un utilisateur
     .delete(checkArticleExist, (req, res) => {
@@ -20,7 +20,7 @@ router.route('/:id(\\d+)')
 
         article.delete()
             .then(() => {
-                res.json(`L'utilisateur ${article.login} à été supprimé`)
+                res.json(`L'utilisateur ${article.content} à été supprimé`)
             })
             .catch(err => {
                 res.status(500).json(`Erreur`)
@@ -40,22 +40,12 @@ router.route('/')
         // Création d'une instance de article
         const new_article = new Article(req.body)
 
-        // Syntax 1
-        // new_article.create()
-        //     .then(() => {
-        //         res.status(201).json(`L'utilisateur ${req.body.nom} à été ajouté`)
-        //     })
-        //     .catch((err) => {
-        //         res.status(500).json('Erreur serveur, Echec de l\'ajout')
-        //     })
-
-        // Syntax 2
         try {
             // Création en base de données via le model
             await new_article.create()
 
             // Réponse
-            res.status(201).json(`L'utilisateur ${new_article.login} à été ajouté`)
+            res.status(201).json(`L'utilisateur ${new_article.content} à été ajouté`)
         }
         catch (err) {
             console.error('Erreur dans la route', err)
